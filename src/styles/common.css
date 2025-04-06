@@ -1,0 +1,89 @@
+// this file contains all custom css for the whole website
+body {
+	margin: 0;
+	font-family: Times New Roman, san-serif;
+	background-color: #7C6A6A;
+	color: black;
+	text-align: center;
+}
+
+div {
+	margin: 0;
+	font-family: Times New Roman, san-serif;
+	background-color: #7C6A6A;
+	color: black;
+	text-align: center;
+}
+
+h1, h2, h3, p, td {
+	background-color: #FFB24F;
+	display: "inline-block";
+	padding: 10px;
+}
+
+th {
+	background-color: #FFB24F;
+	display: "inline-block";
+	font-weight: bold;
+	padding: 10px;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.button, .attendee-list button, .attendee-form button {
+	background-color: #99FFFF;
+	color: black;
+	font-weight: bold;
+	border:none;
+	padding: 10px 15px;
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 16px;
+	border-radius: 4px;
+	margin: 10px;
+}
+
+.button:hover {
+	opacity: 0.9;
+}
+
+.user-nav {
+	display: flex;
+	justify-content: flex-start;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.user-event-details {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+.attendee-list {
+	list-style: none;
+	padding: 0;
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
+}
+
+.attendee-list li {
+	background-color: #FFB24F;
+	padding: 10px 20px;
+	border-radius: 8px;
+	color: black;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
