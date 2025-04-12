@@ -1,0 +1,83 @@
+.user-container {
+    background-color: #776565;
+    padding: 30px;
+    text-align: center;
+    color: #000;
+    min-height: 100vh;
+}
+
+.user-nav {
+    margin-bottom: 20px;
+}
+
+    .user-nav .button {
+        background-color: #7EF9F8;
+        font-weight: bold;
+        padding: 8px 20px;
+        margin: 5px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+.user-event-details {
+    background-color: #FFB24F;
+    padding: 30px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: left;
+    margin-top: 20px;
+}
+
+    .user-event-details h2 {
+        text-align: center;
+        background-color: #FFB24F;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .user-event-details label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .user-event-details input {
+        flex: 1;
+        padding: 10px;
+        margin-left: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .user-event-details .button {
+        display: block;
+        width: 100px;
+        margin: 10px auto;
+        background-color: #7EF9F8;
+        font-weight: bold;
+        padding: 8px 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+/* Orange background for welcome text */
+.welcome-highlight {
+    background-color: #FFB24F;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Button base */
+.button {
+    transition: all 0.2s ease-in-out;
+}
+
+    /* Hover effect for buttons */
+    .button:hover {
+        background-color: #65d4d2; /* slightly darker cyan */
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        opacity: 0.95;
+    }
