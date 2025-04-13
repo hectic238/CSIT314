@@ -6,8 +6,8 @@
   cursor: pointer;
   display: inline-block;
   font-weight: bold;
-  margin-right: 0.5rem;
-  padding: 0.5rem 1rem;
+  margin-right: 8px;
+  padding: 8px 16px;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
 }
@@ -27,8 +27,8 @@
   cursor: pointer;
   display: inline-block;
   font-weight: bold;
-  margin-bottom: 1rem;
-  padding: 0.75rem 1.25rem;
+  margin-bottom: 16px;
+  padding: 12px 20px;
   text-decoration: none;
 }
 
@@ -37,18 +37,18 @@
 }
 
 .end-date-label {
-  margin-right: 6.5rem;
+  margin-right: 104px;
 }
 
 .event-table {
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
   width: 100%;
 }
 
 .event-table tbody td {
   background-color: #E58E39;
-  padding: 0.75rem;
+  padding: 12px;
 }
 
 .event-table tbody tr:not(:last-child) {
@@ -57,7 +57,7 @@
 
 .event-table thead th {
   background-color: #FFB24F;
-  padding: 0.75rem;
+  padding: 12px;
   text-align: left;
 }
 
@@ -104,39 +104,39 @@
   cursor: pointer;
   display: inline-flex;
   font-weight: bold;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
 }
 
 .filter-header {
   align-items: center;
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .filter-item {
   align-items: center;
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 
 .filter-panel {
   background-color: #e7d1f9;
   border: 2px solid #d96eff;
   border-radius: 6px;
-  column-gap: 1rem;
+  column-gap: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 1rem 0;
-  padding: 1rem;
-  row-gap: 1rem;
+  margin: 16px 0;
+  padding: 16px;
+  row-gap: 16px;
 }
 
 .filter-row {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .location {
@@ -199,14 +199,14 @@
 
 .table-scroll {
   border: 0px solid #999;
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 
 .toggle-switch {
   align-items: center;
   display: flex;
   gap: 8px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 
 .user-container {
@@ -215,7 +215,7 @@
   margin: 0 auto;
   max-width: 1200px;
   min-height: 100vh;
-  padding: 1rem;
+  padding: 16px;
   text-align: center;
   width: 90%;
 }
@@ -261,7 +261,7 @@
 }
 
 .user-nav {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   text-align: left;
 }
 
@@ -277,8 +277,8 @@
 .welcome-banner {
   background-color: #FFB24F;
   border-radius: 8px;
-  margin-bottom: 1rem;
-  padding: 1rem;
+  margin-bottom: 16px;
+  padding: 16px;
   text-align: center;
 }
 

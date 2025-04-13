@@ -145,7 +145,7 @@ function UserEventBrowserCopy() {
                                 <select
                                     value={sortOption}
                                     onChange={(e) => setSortOption(e.target.value)}
-                                    style={{ marginLeft: "0.5rem" }}
+                                    style={{ marginLeft: "8px" }}
                                 >   
                                     <option value="">(None)</option>
                                     <option value="priceAsc">Price Low-High</option>
@@ -164,7 +164,7 @@ function UserEventBrowserCopy() {
                                     type="date"
                                     value={startDate}
                                     onChange={(e) => setStartDate(e.target.value)}
-                                    style={{ marginLeft: "0.5rem" }}/>
+                                    style={{ marginLeft: "8px" }}/>
                             </label>
                             <label className="end-date-label">
                                 End Date:
@@ -172,7 +172,7 @@ function UserEventBrowserCopy() {
                                     type="date"
                                     value={endDate}
                                     onChange={(e) => setEndDate(e.target.value)}
-                                    style={{ marginLeft: "0.5rem" }}/>
+                                    style={{ marginLeft: "8px" }}/>
                             </label>
                         </div>
 
@@ -184,7 +184,7 @@ function UserEventBrowserCopy() {
                                     type="text"
                                     placeholder="e.g. Sydney"
                                     onChange={(e) => setLocationFilter(e.target.value)}
-                                    style={{ marginLeft: "0.5rem" }}/>
+                                    style={{ marginLeft: "8px" }}/>
                             </label>
                         </div>
 
@@ -202,7 +202,7 @@ function UserEventBrowserCopy() {
                                         handlePriceSlider(e);
                                         handleApplyFilters();
                                       }}
-                                    style={{ width: "150px", marginLeft: "1rem" }}/>
+                                    style={{ width: "150px", marginLeft: "16px" }}/>
                             </label>
                         </div>
 
@@ -224,7 +224,7 @@ function UserEventBrowserCopy() {
 
                         {/* clear filter */}
                         <div>
-                            <button onClick={handleClearFilters} style={{ marginLeft: "0.5rem" }}>
+                            <button onClick={handleClearFilters} style={{ marginLeft: "8px" }}>
                                 Clear Filters
                             </button>
                         </div>
