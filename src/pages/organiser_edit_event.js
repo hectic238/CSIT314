@@ -1,160 +1,145 @@
 // import directories
-import React, {useState} from 'react';
-import {useLocation, useNavigate, Link} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import Nav_button from '../components/nav_button';
+import NavButton from '../components/nav_button';
 
 import "../styles/common.css";
 
-// create a function for organiser to edit events
 function OrganiserEditEvent() {
 
-	// to allow the organiser to go back to the previous activity
-	// which is supposed to be "organiser portal"
+	{/* for navigation on the site */}
 	const navigate = useNavigate();
-	const location = useLocation();
 
-	// get event data from previous page
-	// got default values, in case not working
-	const event = location.state || {
-		name: "Event name",
-		date: "01/01/1970",
-		time: "12:00 am",
-		location: "Event location",
-		VIPPrice: 100,
-		generalPrice: 10,
-		id: "0000"
+	{/* default temporary data until database is set up */}
+	const [event, setEvent] = useState({
+		id: 2,
+		name: 'Event Name 2',
+		date: '1976-01-01',
+		time: '00:12',
+		location: 'CAD',
+		description: 'event details 101',
+		generalprice: 0,
+		vipprice: 100
+	});
+
+	{/* to store event details on site when changed */}
+	const [formData, setFormData] = useState({
+		name: '',
+		date: '',
+		time: '',
+		location: '',
+		description: '',
+		generalprice: '',
+		vipprice: ''
+	});
+
+	{/* to change the tab name */}
+	useEffect(() => {
+		document.title = "Event Manager";
+
+		{/* pre load values in the fields */}
+		setFormData({
+			name: event.name,
+			date: event.date,
+			time: event.time,
+			location: event.location,
+			description: event.description,
+			generalprice: event.generalprice,
+			vipprice: event.vipprice
+		});
+	}, []);
+	
+	{/* handles the change in the form fields */}
+	const handleChange = (e) => {
+		const {name, value} = e.target;
+		setFormData(prev => ({...prev, [name]: value}));
 	};
 
-	// track input value
-	const [newName, setNewName] = useState('');
-	const [newDate, setNewDate] = useState('');
-	const [newTime, setNewTime] = useState('');
-	const [newLocation, setNewLocation] = useState('');
-	const [newVIP, setNewVIP] = useState('');
-	const [newGeneral, setNewGeneral] = useState('');
+	{/* what happens when submitted */}
+	const handleSubmit = (e) => {
+		e.preventDefault();
 
-	// function to save the data
-	const save_event_edit = () => {
-		const updatedFields = {};
+		{/* unchanged data = old data, so copy old into new form */}
+		const updateData = {
+			name: formData.name || event.name,
+			date: formData.date || event.date,
+			time: formData.time || event.time,
+			location: formData.location || event.location,
+			description: formData.description || event.description,
+			generalprice: formData.generalprice !== '' ? formData.generalprice: event.generalprice,
+			vipprice: formData.vipprice !== '' ? formData.vipprice: event.vipprice,
+		};
 
-		// if anything is typed into the field, save it.
-		if (newName) updatedFields.name = newName;
-		if (newDate) updatedFields.date = newDate;
-		if (newTime) updatedFields.time = newTime;
-		if (newLocation) updatedFields.location = newLocation;
-		if (newVIP) updatedFields.VIPPrice = Number(newVIP);
-		if (newGeneral) updatedFields.generalPrice = Number(newGeneral);
+		{/* validate time and date to be in the future */}
+		const selectedDateTime = new Date(`${updateData.date}T${updateData.time}`);
+		const now = new Date();
+		if (selectedDateTime <= now) {
+			alert("Date and Time need to be in the future");
+			return;
+		}
 
-		// output that it is working
-		console.log("fields to update: ", updatedFields);
+		{/* validate that prices are not negative */}
+		if (formData.generalprice < 0 || formData.vipprice < 0) {
+			alert("Ticket prices needs to be positive");
+			return;
+		}
+		
 
-		// go back to organiser portal
+		{/* save updates to the page */}
+		setEvent(updateData);
+
+		{/* back to organiser portal */}
 		navigate("/organiser-portal");
-
 	};
 
 	return (
-		<div className = "user-container">
-			{/* navigation buttons */}
-			<div className = "user-nav">
-				<Nav_button to = "/login-page">
-					Event Management
-				</Nav_button>
-				<Nav_button to = "/organiser-portal">
-					Back to organiser portal
-				</Nav_button>
-			</div>
-			<h2>
-				Event Editing
-			</h2>
-			<div className = "event-details">
-				<table>
-					<thead>
-						<tr>
-							<th>
-							
-							</th>
-							<th>
-								Current event details:
-							</th>
-							<th>
-								New event details:
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								Name:
-							</td>
-							<td>
-								{event.name}
-							</td>
-							<td>
-								<input type = "text" value={newName} onChange={e => setNewName(e.target.value)} />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Date:
-							</td>
-							<td>
-								{event.date}
-							</td>
-							<td>
-								<input type = "date" value={newDate} onChange={e => setNewDate(e.target.value)}/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Time:
-							</td>
-							<td>
-								{event.time}
-							</td>
-							<td>
-								<input type = "time" value={newTime} onChange={e => setNewTime(e.target.value)} />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Location:
-							</td>
-							<td>
-								{event.location}
-							</td>
-							<td>
-								<input type = "text" value={newLocation} onChange={e => setNewLocation(e.target.value)}/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								General admission ticket:
-							</td>
-							<td>
-								{event.generalPrice}
-							</td>
-							<td>
-								<input type = "number" value={newGeneral} onChange={e => setNewGeneral(e.target.value)}/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								VIP ticket:
-							</td>
-							<td>
-								{event.VIPPrice}
-							</td>
-							<td>
-								<input type = "number" value={newVIP} onChange={e => setNewVIP(e.target.value)}/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<button onClick = {save_event_edit} className = "button">
-					Save changes
-				</button>
+		<div>
+			{/* navigation button to the home page */}
+			<NavButton to="/home-page">
+				Event Manager
+			</NavButton>
+			{/* navigation button to the organiser portal */}
+			<NavButton to="/organiser-portal">
+				Organiser Portal
+			</NavButton>
+
+			{/* Page purpose */}
+			<h1>
+				Organiser Edit Event
+			</h1>
+			
+			<div className = "container_content">
+				<div className = "center_screen">
+					<form onSubmit = {handleSubmit}>
+						<p>
+							Event name: <input type = "text" name = "name" value = {formData.name} onChange = {handleChange} />	
+						</p>
+						<p>
+							Date <input type = "date" name = "date" value = {formData.date} onChange = {handleChange} />	
+						</p>
+						<p>
+							Time <input type = "time" name = "time" value = {formData.time} onChange = {handleChange} />	
+						</p>
+						<p>
+							location: <input type = "text" name = "location" value = {formData.location} onChange = {handleChange} />	
+						</p>
+						<p>
+							Description: <input type = "text" name = "description" value = {formData.description} onChange = {handleChange} />	
+						</p>
+						<p>
+							General Admission Price: <input type = "number" name = "generalprice" value = {formData.generalprice} onChange = {handleChange} />	
+						</p>
+						<p>
+							VIP Price: <input type = "number" name = "vipprice" value = {formData.vipprice} onChange = {handleChange} />	
+						</p>
+						<p>
+							<button type = "submit" className= "button">
+								Save Changes
+							</button>
+						</p>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

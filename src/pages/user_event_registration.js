@@ -1,8 +1,8 @@
 // import directories
-import React, {useState} from 'react';
-import {useLocation, useNavigate, Link} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 
-import Nav_button from '../components/nav_button';
+import NavButton from '../components/nav_button';
 import TicketOptions from '../components/ticket_options';
 
 import "../styles/common.css";
@@ -22,54 +22,70 @@ function UserEventRegistration() {
 		date: "01/01/1970",
 		time: "12:00 am",
 		location: "Event location",
-		VIPPrice: 100,
-		generalPrice: 10,
+		type: "Conference",
+		description: "Epoch is the time followed to measure time in computers, often used in coding",
+		vipprice: 100,
+		generalprice: 10,
 		id: "0000"
 	};
 
 
 	return (
-		<div className = "user-container">
-			{/* navigation buttons */}
-			<div className = "user-nav">
-				<Nav_button to = "/login-page">
-					Event Management
-				</Nav_button>
-				<Nav_button to = "/user-portal">
-					Back to event search
-				</Nav_button>
-			</div>
-			<h2>
-				Event Registration
-			</h2>
-			<div className = "user-event-details">
+		<div>
+			{/* navigation button to the home page */}
+			<NavButton to="/home-page">
+				Event Manager
+			</NavButton>
+			{/* navigation button to go back to user portal */}
+			<NavButton to="/user-portal">
+				User portal
+			</NavButton>
+
+			{/* Page purpose */}
+			<h1>
+				User Event Registration
+			</h1>
+
+			<div className = "container_content">
 				<h1>
 					{event.name}
 				</h1>
-				<p>
+				<p className = "content_text">
 					<strong>
-						Date:
+						Date: 
 					</strong>
 					{event.date}
 				</p>
-				<p>
+				<p className = "content_text">
 					<strong>
-						Time:
+						Time: 
 					</strong>
 					{event.time}
 				</p>
-				<p>
+				<p className = "content_text">
 					<strong>
-						Location:
+						Location: 
 					</strong>
 					{event.location}
 				</p>
+				<p className = "content_text">
+					<strong>
+						Type: 
+					</strong>
+					{event.type}
+				</p>
+				<p className = "content_text">
+					<strong>
+						Description: 
+					</strong>
+					{event.description}
+				</p>
 			</div>
-			<div className = "user-ticket-options">
-				<h2>
+			<div className = "container_content">
+				<h1>
 					Tickets
-				</h2>
-				<TicketOptions VIPPrice = {event.VIPPrice} generalPrice = {event.generalPrice} eventID = {event.id} />
+				</h1>
+				<TicketOptions vipprice = {event.vipprice} generalprice = {event.generalprice} eventID = {event.id} />
 			</div>	
 		</div>
 	);

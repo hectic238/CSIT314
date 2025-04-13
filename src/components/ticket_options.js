@@ -1,14 +1,21 @@
 // import directories
-import React, {useState} from "react";
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+
 import "../styles/common.css";
 
 function TicketOptions ({VIPPrice, generalPrice, eventID}) {
+	{/* setting up for navigation */}
+	const navigate = useNavigate();
+
 	const [selected, setSelected] = useState(null);
 
 	// for the next page (payment)
 	// declare that the ticket type is whatever the user pressed
 	const handleTicketSelection = (type) => {
 		setSelected(type);
+		
+		navigate("/user-event-payment");
 	};
 
 	return (
@@ -20,7 +27,7 @@ function TicketOptions ({VIPPrice, generalPrice, eventID}) {
 				VIP Ticket - ${VIPPrice}
 			</button>
 
-			{selected && (<p>You have selected: <strong>{selected.toUpperCase()}</strong> ticket</p>)}
+			{selected && (<div><p className = "content_text">You have selected: <strong>{selected.toUpperCase()}</strong> ticket</p></div>)}
 		</div>
 	);
 }

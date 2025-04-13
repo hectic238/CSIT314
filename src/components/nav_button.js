@@ -6,7 +6,7 @@ import "../styles/common.css";
 
 // declare what happens when pressing a button
 // it should take you to the next page (children)
-const Nav_button = ({to, children, ...props}) => {
+const NavButton = ({to, children, ...props}) => {
 	return (
 		<Link to = {to} className = "button" {...props}>
 			{children}
@@ -14,4 +14,4 @@ const Nav_button = ({to, children, ...props}) => {
 	);
 };
 
-export default Nav_button;
+export default NavButton;

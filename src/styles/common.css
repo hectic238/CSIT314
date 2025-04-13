@@ -1,89 +1,88 @@
-// this file contains all custom css for the whole website
+/* CSS common file to style the website */
+
+/* css for the whole page */
 body {
-	margin: 0;
-	font-family: Times New Roman, san-serif;
+	font-family: Cambria;
 	background-color: #7C6A6A;
 	color: black;
-	text-align: center;
 }
 
-div {
-	margin: 0;
-	font-family: Times New Roman, san-serif;
-	background-color: #7C6A6A;
-	color: black;
-	text-align: center;
-}
-
-h1, h2, h3, p, td {
-	background-color: #FFB24F;
-	display: "inline-block";
-	padding: 10px;
-}
-
-th {
-	background-color: #FFB24F;
-	display: "inline-block";
-	font-weight: bold;
-	padding: 10px;
-}
-
-table {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.button, .attendee-list button, .attendee-form button {
+/* css for the buttons, use class name to implement */
+.button {
 	background-color: #99FFFF;
 	color: black;
 	font-weight: bold;
-	border:none;
-	padding: 10px 15px;
 	text-decoration: none;
 	cursor: pointer;
-	font-size: 16px;
-	border-radius: 4px;
-	margin: 10px;
+	padding: 10px 5px;
+	margin: 10px 10px;
+	border: none;
+	border-radius: 10px;
 }
 
+/* make .button class change color when hovered above */
 .button:hover {
-	opacity: 0.9;
+	background-color: #00FFAA;
+	box-shadow: 0 2px 1px;
 }
 
-.user-nav {
-	display: flex;
-	justify-content: flex-start;
-	gap: 10px;
-	margin-bottom: 10px;
-}
-
-.user-event-details {
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 20px;
-}
-
-.attendee-list {
-	list-style: none;
-	padding: 0;
-	margin-top: 20px;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	align-items: center;
-}
-
-.attendee-list li {
+/* heading style */
+h1 {
 	background-color: #FFB24F;
-	padding: 10px 20px;
-	border-radius: 8px;
-	color: black;
+	text-align: center;
+}
+
+/* container content style */
+.container_content {
+	text-align: center;
+}
+
+/* normal text style */
+.content_text {
+	background-color: #FFB24F;
+	display: inline-block;
+	margin: 10px;
+	padding: 5px;
+}
+
+/* creates a special place at the center of the screen */
+.center_screen {
+	position: absolute;
+	background-color: #FFB24F;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	font-weight: bold;
-	display: flex;
-	align-items: center;
-	gap: 15px;
+	padding: 1rem 2rem;
+	border-radius: 10px;
+}
+
+/* adds some space between text lines */
+.center_screen p {
+	margin-bottom: 30px;
+}
+
+/* css for tables */
+.table {
+	margin:auto;
+	border-collapse: collapse;
+	text-align: center;
+	background-color: #FFB24F;
+}
+
+/* css for tables */
+th, td {
+	padding: 15px;
+	border: 5px solid;
+	margin-bottom: 30px;
+}
+
+/* css for tables */
+tr {
+	border: 5px solid;
+}
+
+/* adds a seperation border */
+.noborder {
+	border: 0px solid;
 }
