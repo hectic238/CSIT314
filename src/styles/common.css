@@ -1,0 +1,198 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: "Times New Roman", Times, serif;
+    background-color: #7C6A6A; /* light brown background */
+    color: black;
+  }
+  
+  /* Top-right login bar */
+  .top-login-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+  }
+  
+  .login-text-label {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .top-login-button {
+    background-color: #99FFFF;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 6px;
+    color: black;
+    font-weight: bold;
+    font-size: 1.15rem;
+    border: none;
+  }
+  
+  .top-login-button:hover {
+    background-color: #B2FFFF;
+  }
+  
+  /* Registration page background */
+  .reg-page-bg {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem;
+  }
+  
+  /* Registration card styling */
+  .register-card {
+    background-color: #FFB24F;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid black;
+    width: 100%;
+    max-width: 420px;
+  }
+  
+  /* Form heading */
+  .register-title {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Form layout */
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Label and input */
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .form-field label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .register-form input[type="text"],
+  .register-form input[type="email"],
+  .register-form input[type="password"] {
+    padding: 10px;
+    font-size: 1rem;
+    font-family: "Times New Roman", Times, serif;
+    border: 1.5px solid #555;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .register-form input:focus {
+    outline: none;
+    border-color: #FFA500;
+    box-shadow: 0 0 5px #FFA500;
+  }
+  
+  /* Checkbox field */
+  .checkbox-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .checkbox-field input[type="checkbox"] {
+    transform: scale(1.1);
+    margin-right: 5px;
+  }
+  
+  /* Submit button */
+  .signup-btn {
+    background-color: #99FFFF;
+    border: none;
+    color: black;
+    padding: 1rem 1.2rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+  
+  .signup-btn:hover {
+    background-color: #B2FFFF;
+  }
+  
+  /* Divider styling */
+  .divider {
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 1rem 0 0.5rem;
+    position: relative;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: "";
+    display: inline-block;
+    width: 30%;
+    height: 1px;
+    background: #444;
+    vertical-align: middle;
+    margin: 0 10px;
+  }
+  
+  /* Social login buttons */
+  .facebook-btn,
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.6rem 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.95rem;
+  }
+  
+  .facebook-btn {
+    background-color: #3b5998;
+  }
+  
+  .google-btn {
+    background-color: #db4437;
+  }
+  
+  .facebook-btn:hover {
+    background-color: #2d4373;
+  }
+  
+  .google-btn:hover {
+    background-color: #c23321;
+  }
+  
+  /* Social button icons */
+  .icon {
+    height: 16px;
+    width: auto;
+    vertical-align: middle;
+  }
+  
