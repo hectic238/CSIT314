@@ -86,3 +86,18 @@ tr {
 .noborder {
 	border: 0px solid;
 }
+
+/* customising the message feature */
+.message {
+	font-weight: bold;
+	background-color: black;
+	text-align: center;
+}
+
+.message.success {
+	color: green;
+}
+
+.message.error {
+	color: red;
+}

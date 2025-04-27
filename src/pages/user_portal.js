@@ -1,102 +1,126 @@
 // import directories
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import NavButton from '../components/nav_button';
+import Message from '../components/message';
 
 import "../styles/common.css";
 
 const UserPortal = () => {
-	{/* setting up for navigation */}
+	// setting up for navigation
 	const navigate = useNavigate();
 
-	{/* to change the tab name */}
+	// hold event data
+	const [events, setevents] = useState([]);
+
+	// setting up for message content
+	const [message, setmessage] = useState('');
+	
+	// setting up for message type, either (error or success)
+	const [messagetype, setmessagetype] = useState('');
+
+	// to change the tab name
 	useEffect(() => {
 		document.title = "Event Manager";
 	}, []);
 
-	{/* temporary event detail */}
-	const [events, setEvents] = useState([
-		{
-			id: 1,
-			name: "Tech Expo 2025",
-			date: "2025-06-15",
-			time: "02:00",
-			location: "Tech Hall",
-			type: "Conference",
-			description:"Latest in AI and Robotics",
-			generalprice: 30,
-			vipprice: 100,
-		},
-		{
-			id: 2,
-			name: "Concert in the Park",
-			date: "2025-05-20",
-			time: "13:00",
-			location: "New York",
-			type: "Music Concert",
-			description: "A relaxing evening concert with live music.",
-			generalprice: 20,
-			vipprice: 50,
-		},
-		{
-			id: 3,
-			name: "Local Art Fair",
-			date: "2025-04-25",
-			time: "12:00",
-			location: "Toronto",
-			type: "Networking Session",
-			description: "Discover and buy from local artists.",
-			generalprice: 0,
-			vipprice: 10,
-		},
-	]);
-
-	{/* develop a filter */}
+	// develop a filter	
 	const [filters, setfilters] = useState ({
 		location: '',
-		generalprice: 0,
+		generalprice: 1000,
 		date: '',
 		type: '',
-	});
-
-	{/* assign filter changes to its relevant title */}
+	});// assign filter changes to its relevant title
 	const handleFilterChange = (e) => {
 		const {name, value} = e.target;
 		setfilters (prev => ({...prev, [name]: value}));	
 	};
 
-	{/* clearing filters */}
-	const clearFilters = () => {
-		setfilters({
-			location: '',
-			generalprice: 0,
-			date: '',
-			type: '',
-		});
-	};
-
-	{/* slider for price range */}
+	// slider for price range
 	const handlePriceSlider = (e) => {
 		setfilters (prev => ({...prev, generalprice: parseInt(e.target.value) }));
 	};
 
-	{/* filtering */}
-	const filteredEvents = events.filter(event => {
-		{/* group location matching events */}
-		const matchesLocation = filters.location ? event.location.toLowerCase().includes(filters.location.toLowerCase()) : true;
+	// filtering
+	const filteredEvents = useMemo(() => {
+		return Array.isArray(events) ? events.filter(event => {
+			// group location matching events
+			const matchesLocation = filters.location ? event.location.toLowerCase().includes(filters.location.toLowerCase()) : true;
 
-		{/* group date matching events */}
-		const matchesDate = filters.date ? event.date == filters.date : true;
+			// group date matching events
+			const matchesDate = filters.date ? event.date === filters.date : true;
 
-		{/* group events by type */}
-		const matchesType = filters.type ? event.type.toLowerCase().includes(filters.type.toLowerCase()) : true;
+			// group events by type
+			const matchesType = filters.type ? event.type.toLowerCase().includes(filters.type.toLowerCase()) : true;
 
-		{/* price range matching */}
-		const matchesPrice = event.generalprice <= filters.generalprice;
+			// price range matching
+			const matchesPrice = event.generalprice <= filters.generalprice;
 
-		return matchesLocation && matchesDate && matchesType && matchesPrice;
-	});
+			return matchesLocation && matchesDate && matchesType && matchesPrice;
+		}) : [];
+	}, [events, filters]);
+
+	// fetching data from backend
+	// to create a token and prevent unauthorised access
+	useEffect(() => {
+		// get token from local storage
+		const token = localStorage.getItem('token');
+		
+		// get Member role
+		const role = localStorage.getItem('role');
+
+		// redirect to login if no token or not organiser
+		if (!token || (role !== 'User')) {
+			navigate('/user-login');
+			return;
+		}
+
+		// get all events
+		const fetchevents = async () => {
+
+			setmessage('');
+			setmessagetype('');
+
+			try {
+				const response = await fetch(`http://localhost:5000/api/events/user`, {
+					method: "GET",
+					headers: {
+						"Authorization": `Bearer ${token}`
+					},
+				});
+				
+				// check if fetched events
+				if (!response.ok) {
+					setmessage("Could not fetch the event!");
+					setmessagetype("error");
+				}
+
+				const data = await response.json();
+
+				// save the data
+				setevents(data);
+			}
+			catch (error) {
+				setmessage("server error!");
+				setmessagetype("error");
+			}
+		};
+
+		fetchevents();
+
+	}, [navigate]);
+
+	useEffect(() => {
+		if ((events.length > 0) && (filteredEvents.length === 0)) {
+			setmessage("No events fit this filter!");
+			setmessagetype("error");
+		}
+		else {
+			setmessage('');
+			setmessagetype('');
+		}
+	}, [filteredEvents, events]);
 
 	return (
 		<div>
@@ -113,7 +137,7 @@ const UserPortal = () => {
 			<h1>
 				User Portal
 			</h1>
-			
+			<Message message = {message} type = {messagetype} />
 			<div className = "container_content">
 				<div>
 					<p className = "content_text">
@@ -160,7 +184,7 @@ const UserPortal = () => {
 					</thead>
 					<tbody>
 						{filteredEvents.map(event => (
-							<tr key = {event.id}>
+							<tr key = {event._id}>
 								<td>
 									{event.name}
 								</td>
@@ -185,13 +209,12 @@ const UserPortal = () => {
 										Register
 									</button>
 									*/}
-									<NavButton to={'/user-event-registration'}>
+									<NavButton to={`/user-event-registration/${event._id}`}>
 										Register
 									</NavButton>
 								</td>
 							</tr>
 						))}
-						{filteredEvents.length == 0 && <p>No Events Match This Filter</p>}
 					</tbody>
 				</table>
 			</div>

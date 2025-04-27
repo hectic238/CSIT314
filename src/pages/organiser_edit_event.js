@@ -1,96 +1,158 @@
 // import directories
 import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import NavButton from '../components/nav_button';
+import Message from '../components/message';
 
 import "../styles/common.css";
 
 function OrganiserEditEvent() {
 
-	{/* for navigation on the site */}
+	// for navigation on the site
 	const navigate = useNavigate();
 
-	{/* default temporary data until database is set up */}
-	const [event, setEvent] = useState({
-		id: 2,
-		name: 'Event Name 2',
-		date: '1976-01-01',
-		time: '00:12',
-		location: 'CAD',
-		description: 'event details 101',
-		generalprice: 0,
-		vipprice: 100
-	});
+	// get the event id from the link
+	const {eventid} = useParams();
 
-	{/* to store event details on site when changed */}
+	// form data holder
 	const [formData, setFormData] = useState({
 		name: '',
 		date: '',
 		time: '',
+		type: '',
 		location: '',
 		description: '',
 		generalprice: '',
 		vipprice: ''
 	});
 
-	{/* to change the tab name */}
+	// setting up for message content
+	const [message, setmessage] = useState('');
+	
+	// setting up for message type, either (error or success)
+	const [messagetype, setmessagetype] = useState('');
+
+	// to create a token and prevent unauthorised access
+	useEffect(() => {
+		// get token from local storage
+		const token = localStorage.getItem('token');
+		
+		// get Member role
+		const role = localStorage.getItem('role');
+
+		// redirect to login if no token or not organiser
+		if (!token || (role !== 'Organiser')) {
+			navigate('/organiser-login');
+			return;
+		}
+
+		// get events linked to this organiser
+		const fetchEvent = async () => {
+
+			setmessage('');
+			setmessagetype('');
+
+			try {
+				const response = await fetch(`http://localhost:5000/api/events/member/${eventid}`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+				
+				// check if fetched events
+				if (!response.ok) {
+					setmessage("Could not fetch the event!");
+					setmessagetype("error");
+				}
+
+				const data = await response.json();
+
+				// pre load values in the fields
+				setFormData({
+					name: data.name,
+					date: data.date,
+					time: data.time,
+					location: data.location,
+					type: data.type,
+					description: data.description,
+					generalprice: data.generalprice,
+					vipprice: data.vipprice
+				});
+
+			}
+			catch (error) {
+				setmessage("server error!");
+				setmessagetype("error");
+			}
+		};
+
+		fetchEvent();
+
+	}, [eventid, navigate]);
+
+	// to change the tab name
 	useEffect(() => {
 		document.title = "Event Manager";
-
-		{/* pre load values in the fields */}
-		setFormData({
-			name: event.name,
-			date: event.date,
-			time: event.time,
-			location: event.location,
-			description: event.description,
-			generalprice: event.generalprice,
-			vipprice: event.vipprice
-		});
 	}, []);
 	
-	{/* handles the change in the form fields */}
+	// handles the change in the form fields
 	const handleChange = (e) => {
 		const {name, value} = e.target;
 		setFormData(prev => ({...prev, [name]: value}));
 	};
 
-	{/* what happens when submitted */}
-	const handleSubmit = (e) => {
+	// what happens when submitted
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		{/* unchanged data = old data, so copy old into new form */}
-		const updateData = {
-			name: formData.name || event.name,
-			date: formData.date || event.date,
-			time: formData.time || event.time,
-			location: formData.location || event.location,
-			description: formData.description || event.description,
-			generalprice: formData.generalprice !== '' ? formData.generalprice: event.generalprice,
-			vipprice: formData.vipprice !== '' ? formData.vipprice: event.vipprice,
-		};
-
-		{/* validate time and date to be in the future */}
-		const selectedDateTime = new Date(`${updateData.date}T${updateData.time}`);
+		// validate time, date and make sure they are not in the past
+		const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
 		const now = new Date();
 		if (selectedDateTime <= now) {
-			alert("Date and Time need to be in the future");
+			setmessage("Date and Time, needs to be in the future!");
+			setmessagetype("error");
 			return;
 		}
 
-		{/* validate that prices are not negative */}
+		// validate that prices are not negative
 		if (formData.generalprice < 0 || formData.vipprice < 0) {
-			alert("Ticket prices needs to be positive");
+			setmessage("Ticket price needs to be positive!");
+			setmessagetype("error");
 			return;
 		}
 		
+		// send data to backend
+		try {
+			const token = localStorage.getItem('token');
 
-		{/* save updates to the page */}
-		setEvent(updateData);
+			const response = await fetch(`http://localhost:5000/api/events/organiser/${eventid}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+				body: JSON.stringify(formData)
+			});
 
-		{/* back to organiser portal */}
-		navigate("/organiser-portal");
+			// if could not create event
+			// mostly likely due to not being logged in properly
+			if (!response.ok) {
+				setmessage("Please, log in again!");
+				setmessagetype("error");
+				navigate("/organiser-login");
+			}
+
+			setmessage("Event updated!");
+			setmessagetype("success");
+
+			// after submission, now we go back to organiser portal
+			setTimeout(() => navigate("/organiser-portal"), 1500);
+		}
+		catch (error) {
+			setmessage("Could not update event!");
+			setmessagetype("error");
+		}
 	};
 
 	return (
@@ -108,7 +170,7 @@ function OrganiserEditEvent() {
 			<h1>
 				Organiser Edit Event
 			</h1>
-			
+			<Message message = {message} type = {messagetype} />
 			<div className = "container_content">
 				<div className = "center_screen">
 					<form onSubmit = {handleSubmit}>
@@ -123,6 +185,9 @@ function OrganiserEditEvent() {
 						</p>
 						<p>
 							location: <input type = "text" name = "location" value = {formData.location} onChange = {handleChange} />	
+						</p>
+						<p>
+							Type: <input type = "text" name = "type" value = {formData.type} onChange = {handleChange} />	
 						</p>
 						<p>
 							Description: <input type = "text" name = "description" value = {formData.description} onChange = {handleChange} />	

@@ -1,6 +1,9 @@
 // import directories
 import React from 'react';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, useLocation} from 'react-router-dom';
+
+// get session timeout handler to handle timeout
+import SessionTimeoutHandler from './components/sessiontimeouthandler';
 
 import HomePage from './pages/home_page';
 import UserRegister from './pages/user_register';
@@ -16,11 +19,24 @@ import OrganiserEditEvent from './pages/organiser_edit_event';
 import OrganiserManageAttendees from './pages/organiser_manage_attendees';
 import OrganiserSendAnnouncements from './pages/organiser_send_announcements';
 
+// function that handles timeout for only logged in pages
+function ConditionalSessionWrapper() {
+	const location = useLocation();
+	const path = location.pathname;
 
+	// the following are exluded
+	const shouldapplysessiontimeout = ![
+		"/",
+		"/home-page",
+		"/user-register",
+		"/user-login",
+		"/organiser-register",
+		"/organiser-login"
+	].includes(path);
 
-function App() {
 	return (
-		<Router>
+		<>
+			{shouldapplysessiontimeout && <SessionTimeoutHandler />}
 			<Routes>
 				{/* Default route */}
 				<Route path = "/" element = {<HomePage />} />
@@ -30,17 +46,27 @@ function App() {
 				<Route path = "/user-register" element = {<UserRegister />} />
 				<Route path = "/user-login" element = {<UserLogin />} />
 				<Route path = "/user-portal" element = {<UserPortal />} />
-				<Route path = "/user-event-registration" element = {<UserEventRegistration />} />
-				<Route path = "/user-event-payment" element = {<UserEventPayment />} />
+				<Route path = "/user-event-registration/:eventid" element = {<UserEventRegistration />} />
+				<Route path = "/user-event-payment/:eventid" element = {<UserEventPayment />} />
 				{/* Organiser route */}
 				<Route path = "/organiser-register" element = {<OrganiserRegister />} />
 				<Route path = "/organiser-login" element = {<OrganiserLogin />} />
 				<Route path = "/organiser-portal" element = {<OrganiserPortal />} />
 				<Route path = "/organiser-create-event" element = {<OrganiserCreateEvent />} />
-				<Route path = "/organiser-edit-event" element = {<OrganiserEditEvent />} />
-				<Route path = "/organiser-manage-attendees" element = {<OrganiserManageAttendees />} />
-				<Route path = "/organiser-send-announcements" element = {<OrganiserSendAnnouncements />} />
+				<Route path = "/organiser-edit-event/:eventid" element = {<OrganiserEditEvent />} />
+				<Route path = "/organiser-manage-attendees/:eventid" element = {<OrganiserManageAttendees />} />
+				<Route path = "/organiser-send-announcements/:eventid" element = {<OrganiserSendAnnouncements />} />
 			</Routes>
+		</>
+	);
+}
+
+
+
+function App() {
+	return (
+		<Router>
+			<ConditionalSessionWrapper />
 		</Router>
 	);
 }

@@ -1,6 +1,5 @@
 // import directories
 import React, {useEffect} from 'react';
-import {useLocation, useNavigate, Link} from 'react-router-dom';
 
 import NavButton from '../components/nav_button';
 
@@ -8,7 +7,7 @@ import "../styles/common.css";
 
 function HomePage() {
 
-	{/* to change the tab name */}
+	// to change the tab name
 	useEffect(() => {
 		document.title = "Event Manager";
 	}, []);
