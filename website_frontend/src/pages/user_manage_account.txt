@@ -1,30 +1,22 @@
 // import directories
 import React, {useState, useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import NavButton from '../components/nav_button';
 import Message from '../components/message';
 
 import "../styles/common.css";
 
-function OrganiserEditEvent() {
+function UserManageAccount() {
 
 	// for navigation on the site
 	const navigate = useNavigate();
 
-	// get the event id from the link
-	const {eventid} = useParams();
-
 	// form data holder
 	const [formData, setFormData] = useState({
 		name: '',
-		date: '',
-		time: '',
-		type: '',
-		location: '',
-		description: '',
-		generalprice: '',
-		vipprice: ''
+		email: '',
+		password: ''
 	});
 
 	// setting up for message content
@@ -47,49 +39,45 @@ function OrganiserEditEvent() {
 			return;
 		}
 
-		// get events linked to this organiser
-		const fetchEvent = async () => {
+		// get user details
+		const fetchUser = async () => {
+			// get Member id
+			const organiserid = localStorage.getItem('organiser');
 
 			setmessage('');
 			setmessagetype('');
-
 			try {
-				const response = await fetch(`http://localhost:5000/api/events/member/${eventid}`, {
+				const response = await fetch(`http://localhost:5000/api/organiser/${organiserid}`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				});
-				
+			
 				// check if fetched events
 				if (!response.ok) {
-					setmessage("Could not fetch the event!");
+					setmessage("Could not fetch the member details!");
 					setmessagetype("error");
 				}
 
 				const data = await response.json();
 
-				// pre load values in the fields
+				// save the fetched data
 				setFormData({
 					name: data.name,
-					date: data.date,
-					time: data.time,
-					location: data.location,
-					type: data.type,
-					description: data.description,
-					generalprice: data.generalprice,
-					vipprice: data.vipprice
+					email: data.email,
+					password: data.password
 				});
-
+			
 			}
 			catch (error) {
-				setmessage("server error!");
+				setmessage("Could not fetch member details, server error!");
 				setmessagetype("error");
 			}
 		};
 
-		fetchEvent();
+		fetchUser();
 
-	}, [eventid, navigate]);
+	}, [navigate]);
 
 	// to change the tab name
 	useEffect(() => {
@@ -106,34 +94,43 @@ function OrganiserEditEvent() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// validate time, date and make sure they are not in the past
-		const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
-		const now = new Date();
-		if (selectedDateTime <= now) {
-			setmessage("Date and Time, needs to be in the future!");
+		// get Member id
+		const organiserid = localStorage.getItem('organiser');
+
+		// validate that fields are not left empty
+		if (!formData.name || !formData.email || !formData.password) {
+			setmessage("Please fill all fields!");
 			setmessagetype("error");
 			return;
 		}
 
-		// validate that prices are not negative
-		if (formData.generalprice < 0 || formData.vipprice < 0) {
-			setmessage("Ticket price needs to be positive!");
+		// validate email entry
+		// input type = "email" just does a visual message, does not validate :(
+		// string + @ + string + . + string
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+		// email validity check
+		if (!emailRegex.test(formData.email)) {
+			setmessage("Please enter a valid email!");
 			setmessagetype("error");
 			return;
 		}
 
-		// validate that prices are not high and countering their purporse
-		if ((formData.generalprice >= formData.vipprice) || (formData.vipprice > 1000)) {
-			setmessage("General ticket needs to be lower than VIP, and VIP needs to be under $1000");
+		// it is not a requirement, but thought that password should be greater than 6 characters
+		if (formData.password.length < 6) {
+			setmessage("Please add more characters to your password, at least 6");
 			setmessagetype("error");
 			return;
 		}
+
+		// convert email to lowercase
+		const emailLowerCase = formData.email.toLowerCase();
 		
 		// send data to backend
 		try {
 			const token = localStorage.getItem('token');
 
-			const response = await fetch(`http://localhost:5000/api/events/organiser/${eventid}`, {
+			const response = await fetch(`http://localhost:5000/api/organiser/${organiserid}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -142,7 +139,7 @@ function OrganiserEditEvent() {
 				body: JSON.stringify(formData)
 			});
 
-			// if could not create event
+			// if could not update organiser
 			// mostly likely due to not being logged in properly
 			if (!response.ok) {
 				setmessage("Please, log in again!");
@@ -150,14 +147,14 @@ function OrganiserEditEvent() {
 				navigate("/organiser-login");
 			}
 
-			setmessage("Event updated!");
+			setmessage("Organiser details updated!");
 			setmessagetype("success");
 
-			// after submission, now we go back to organiser portal
-			setTimeout(() => navigate("/organiser-portal"), 1500);
+			// reload page
+			window.location.reload();
 		}
 		catch (error) {
-			setmessage("Could not update event!");
+			setmessage("Could not update organiser details!");
 			setmessagetype("error");
 		}
 	};
@@ -175,35 +172,23 @@ function OrganiserEditEvent() {
 
 			{/* Page purpose */}
 			<h1>
-				Organiser Edit Event
+				Organiser Manage Account
 			</h1>
 			<Message message = {message} type = {messagetype} />
 			<div className = "container_content">
 				<div className = "center_screen">
 					<form onSubmit = {handleSubmit}>
 						<p>
-							Event name: <input type = "text" name = "name" value = {formData.name} onChange = {handleChange} />	
+							Hey, {formData.name}	
 						</p>
 						<p>
-							Date <input type = "date" name = "date" value = {formData.date} onChange = {handleChange} />	
+							Organiser name: <input type = "text" name = "name" value = {formData.name} onChange = {handleChange} />	
 						</p>
 						<p>
-							Time <input type = "time" name = "time" value = {formData.time} onChange = {handleChange} />	
+							Email: <input type = "text" name = "email" value = {formData.email} onChange = {handleChange} />	
 						</p>
 						<p>
-							location: <input type = "text" name = "location" value = {formData.location} onChange = {handleChange} />	
-						</p>
-						<p>
-							Type: <input type = "text" name = "type" value = {formData.type} onChange = {handleChange} />	
-						</p>
-						<p>
-							Description: <input type = "text" name = "description" value = {formData.description} onChange = {handleChange} />	
-						</p>
-						<p>
-							General Admission Price: <input type = "number" name = "generalprice" value = {formData.generalprice} onChange = {handleChange} />	
-						</p>
-						<p>
-							VIP Price: <input type = "number" name = "vipprice" value = {formData.vipprice} onChange = {handleChange} />	
+							Password: <input type = "password" name = "password" value = {formData.password} onChange = {handleChange} autoComplete = "" />	
 						</p>
 						<p>
 							<button type = "submit" className= "button">
@@ -217,4 +202,4 @@ function OrganiserEditEvent() {
 	);
 }
 
-export default OrganiserEditEvent;
+export default UserManageAccount;

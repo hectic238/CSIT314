@@ -61,6 +61,13 @@ function OrganiserCreateEvent() {
 			return;
 		}
 
+		// validate that prices are not high and countering their purporse
+		if ((formData.generalprice >= formData.vipprice) || (formData.vipprice > 1000)) {
+			setmessage("General ticket needs to be lower than VIP, and VIP needs to be under $1000");
+			setmessagetype("error");
+			return;
+		}
+
 		// send data to backend
 		try {
 			const token = localStorage.getItem('token');

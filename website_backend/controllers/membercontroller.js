@@ -137,6 +137,97 @@ exports.getuserdetail = async (req, res) => {
 };
 
 // get details about a user
+exports.getorganiserdetail = async (req, res) => {
+	const {organiserid} = req.params;
+	
+	try {	
+		// get organiser with that organiserid
+		const organiser = await Organiser.findById(organiserid);
+
+		// send results
+		res.json(organiser);
+	}
+	catch (error) {
+		res.status(500).json({error: 'Could not get Organiser details, server error!'});
+	}
+};
+
+
+// edit organiser details
+exports.editorganiserdetails = async (req, res) => {
+	// get the specific organiser id we are editing
+	const {organiserid} = req.params;
+
+	// required data for organiser editing
+	const {name, email, password} = req.body;
+
+	try {
+		// create instance of Organiser with details about a specific organiser
+		const organiser = await Organiser.findByIdAndUpdate(organiserid);
+
+		// check that we got the organiser
+		if (!organiser) {
+			return res.status(404).json({error: "organiser not found"});
+		}
+
+		// hash the password using bcrypt
+		const salt = await bcrypt.genSalt(10);
+		const hashedpassword = await bcrypt.hash(password, salt);
+
+		// update organiser with the new details
+		organiser.name = name || organiser.name;
+		organiser.email = email || organiser.email;
+		organiser.password = hashedpassword || organiser.password;
+
+		// save the updated organiser to the database
+		const updatedorganiser = await organiser.save();
+
+		// send result
+		res.json(updatedorganiser);
+	}
+	catch (error) {
+		res.status(500).json({error: "Could not edit organiser, server error!"});
+	}
+};
+
+// edit user details
+exports.edituserdetails = async (req, res) => {
+	// get the specific user id we are editing
+	const {userid} = req.params;
+
+	// required data for organiser editing
+	const {name, email, password} = req.body;
+
+	try {
+		// create instance of Organiser with details about a specific user
+		const user = await User.findByIdAndUpdate(userid);
+
+		// check that we got the organiser
+		if (!user) {
+			return res.status(404).json({error: "user not found"});
+		}
+
+		// hash the password using bcrypt
+		const salt = await bcrypt.genSalt(10);
+		const hashedpassword = await bcrypt.hash(password, salt);
+
+		// update organiser with the new details
+		user.name = name || user.name;
+		user.email = email || user.email;
+		user.password = hashedpassword || user.password;
+
+		// save the updated organiser to the database
+		const updateduser = await user.save();
+
+		// send result
+		res.json(updateduser);
+	}
+	catch (error) {
+		res.status(500).json({error: "Could not edit user, server error!"});
+	}
+};
+
+// get details about a user
 exports.getuserid = async (req, res) => {
 	const {email} = req.params;
 	

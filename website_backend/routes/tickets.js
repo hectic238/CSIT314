@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 // get backend for event on organiser side
-const {registeruser, getuserspecificticket, upgradeticket, getticketbyid, deleteticket} = require('../controllers/payments');
+const {registeruser, getuserspecificticket, upgradeticket, getticketbyid, deleteticket, getallusertickets} = require('../controllers/payments');
 
 // to get user ticket
 router.get('/tickets/user/:eventid/:userid', getuserspecificticket);
@@ -23,5 +23,8 @@ router.get('/tickets/getbyid/:eventid', getticketbyid);
 
 // to delete user ticket for event
 router.delete('/tickets/deleteticket/:ticketid', deleteticket);
+
+// get all tickets for a user
+router.get('/tickets/allusertickets/:userid', getallusertickets);
 
 module.exports = router;

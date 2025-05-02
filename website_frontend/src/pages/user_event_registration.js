@@ -123,7 +123,7 @@ function UserEventRegistration() {
 		try {
 			setmessage('');
 			setmessagetype('');
-			const response = await fetch(`http://localhost:5000/api/tickets/registering`, {
+			const response = await fetch(`http://localhost:5000/api/tickets/register`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

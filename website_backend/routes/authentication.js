@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 // define that registeration and login should be decided in membercontroller.js file
-const {register, login, getuserdetail, getuserid} = require('../controllers/membercontroller');
+const {register, login, getuserdetail, edituserdetails, getorganiserdetail, editorganiserdetails, getuserid} = require('../controllers/membercontroller');
 
 // post api for registration
 router.post('/member/register', register);
@@ -17,6 +17,15 @@ router.post('/login', login);
 
 // get user details
 router.get('/user/:userid', getuserdetail);
+
+// to edit user details
+router.put('/user/:userid', edituserdetails);
+
+// get organiser details
+router.get('/organiser/:organiserid', getorganiserdetail);
+
+// to edit organiser details
+router.put('/organiser/:organiserid', editorganiserdetails);
 
 // get user details
 router.get('/user/getuserid/:email', getuserid);

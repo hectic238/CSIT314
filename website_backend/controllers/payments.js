@@ -140,3 +140,22 @@ exports.deleteticket = async (req, res) => {
 		res.status(500).json({error: "Could not delete event, server error!"});
 	}
 };
+
+// get tickets for a user
+exports.getallusertickets = async (req, res) => {
+	// get the user id
+	const {userid} = req.params;
+	
+	try {	
+		const objectId = new mongoose.Types.ObjectId(userid);
+
+		// get tickets for a specific user id
+		const tickets = await Ticket.find({"userid": objectId}).populate('eventid', 'name date time location');
+
+		// send results
+		res.json(tickets);
+	}
+	catch (error) {
+		res.status(500).json({error: 'Could not get User tickets, server error!'});
+	}
+};
