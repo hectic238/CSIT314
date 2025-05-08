@@ -373,6 +373,9 @@ function OrganiserManageAttendees() {
 
 			setmessage("Ticket Deleted!");
 			setmessagetype("success");
+
+			setmessage("User refunded");
+			setmessagetype("success");
 			
 			// reload page
 			window.location.reload();
