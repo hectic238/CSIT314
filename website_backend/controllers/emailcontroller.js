@@ -8,7 +8,7 @@ const User = require('../models/User');
 const Ticket = require('../models/Ticket');
 
 // create an instant of event from Event.js
-const Event = require('../models/Event');Event
+const Event = require('../models/Event');
 
 const mongoose = require('mongoose');
 
