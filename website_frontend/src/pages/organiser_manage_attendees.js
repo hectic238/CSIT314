@@ -82,8 +82,6 @@ function OrganiserManageAttendees() {
 
 	// send ticket details
 	const registerticket = async (tickettype, userid, password) => {
-		console.log(tickettype);
-
 		// get token from local storage
 		const token = localStorage.getItem('token');
 		try {
@@ -236,12 +234,10 @@ function OrganiserManageAttendees() {
 			await response.json();
 			
 			if (!response.ok) {
-				alert("error sending the email to user!");
 				setmessage("error sending the email to user!");
 				setmessagetype("error");
 			}
 			else {
-				alert("Email sent to user!");
 				setmessage("Email sent to user!");
 				setmessagetype("success");
 			}
@@ -341,6 +337,41 @@ function OrganiserManageAttendees() {
 		}
 	};
 
+	const sendseveringemail = async (ticketid) => {
+		// get token from local storage
+		const token = localStorage.getItem('token');
+
+		setmessage('');
+		setmessagetype('');
+		try {
+			const response = await fetch(`http://localhost:5000/api/email/severingemail`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					"Authorization": `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					"ticketid": ticketid
+				})
+			});
+
+			await response.json();
+			
+			if (!response.ok) {
+				setmessage("error sending the email to user!");
+				setmessagetype("error");
+			}
+			else {
+				setmessage("Email sent to user!");
+				setmessagetype("success");
+			}
+		}
+		catch (error) {
+			setmessage("could not send email, server error!");
+			setmessagetype("error");
+		}
+	};
+
 	// delete button functionality
 	const handleRemove = async (ticketid) => {
 		// get token from local storage
@@ -354,6 +385,13 @@ function OrganiserManageAttendees() {
 			navigate('/organiser-login');
 			return;
 		}
+
+		
+		// tell the user that they have been removed
+		await sendseveringemail(ticketid);
+
+		setmessage("User refunded");
+		setmessagetype("success");
 
 		try {
 			const response = await fetch(`http://localhost:5000/api/tickets/deleteticket/${ticketid}`, {
@@ -372,9 +410,6 @@ function OrganiserManageAttendees() {
 			}
 
 			setmessage("Ticket Deleted!");
-			setmessagetype("success");
-
-			setmessage("User refunded");
 			setmessagetype("success");
 			
 			// reload page

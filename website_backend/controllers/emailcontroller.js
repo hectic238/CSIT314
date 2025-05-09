@@ -47,7 +47,6 @@ const sendEmail = async (to, subject, message) => {
 		``,
 		message
 	].join('\n');
-
 	const encodedmessage = encodeMessage(rawMessage);
 
 	try {
@@ -120,3 +119,41 @@ exports.passwordtoone = async (req, res) => {
 		res.status(500).json("Could not send email, server error");
 	}
 };
+
+// send to 1 attendee severing email
+exports.severingemail = async (req, res) => {
+	// get ticketid from frontend
+	const {ticketid} = req.body;
+	try {
+		const objectId = new mongoose.Types.ObjectId(ticketid);
+
+		// get ticket details from database
+		const ticket = await Ticket.findById(objectId);
+
+		// get user details
+		const user = await User.findById(ticket.userid);
+
+		// get event details
+		const event = await Event.findById(ticket.eventid);
+
+		const message = `
+			Hello ${user.name},
+
+			An organiser have removed you from the attendee list of "${event.name}" event.
+			You have been refunded accordingly.
+
+			Kind regards,
+			Event Manager Team
+		`;
+
+		await sendEmail(user.email, 'Event Manager Event Severing', message);
+
+		// success
+		res.json("email sent!");
+	}
+	catch (error) {
+		// fail
+		res.status(500).json("Could not send email, server error");
+	}
+};
+

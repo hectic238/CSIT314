@@ -266,6 +266,22 @@ function UserEventRegistration() {
 				<h1>
 					Tickets
 				</h1>
+				<div className = "content_text">
+					<p>
+						Credit card number <input type = "text" />
+					</p>
+					<p>
+						Expiry Month <input type = "text" />
+					</p>
+					<p>
+						Expiry Year <input type = "text" />
+					</p>
+					<p>
+						3 digit pin on the back <input type = "text" />
+					</p>
+				</div>
+			</div>
+			<div className = "container_content">
 				<div className = "container_content">
 					<button onClick = {() => GenerateTicket("General")} className = "button">
 						General Admission
