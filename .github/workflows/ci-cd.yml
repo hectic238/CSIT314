@@ -1,0 +1,59 @@
+name: CI/CD Pipeline
+
+on:
+push:
+branches: [main]
+pull_request:
+branches: [main]
+
+jobs:
+setup:
+runs-on: ubuntu-latest
+services:
+mongo:
+image: mongo:5.0
+ports: ['27017:27017']
+options: >-
+--health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"
+--health-interval 10s
+--health-timeout 5s
+--health-retries 5
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v3
+
+  - name: Setup Node.js
+    uses: actions/setup-node@v3
+    with:
+      node-version: '18'
+
+  - name: Install backend dependencies
+    run: |
+      cd backend
+      npm ci
+
+  - name: Install frontend dependencies
+    run: |
+      cd frontend
+      npm ci
+
+  - name: Run backend unit tests
+    run: |
+      cd backend
+      npm run test:unit
+
+  - name: Run system tests
+    run: |
+      cd backend
+      npm run test:system
+
+  - name: Build React frontend
+    run: |
+      cd frontend
+      npm run build
+
+  - name: Simulate deployment (artifact)
+    run: |
+      mkdir -p staging
+      cp -r frontend/build/* staging/
+      echo "Deployment artifact created."
