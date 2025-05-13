@@ -1,55 +1,56 @@
 name: CI/CD Pipeline
 
 on:
-push:
-branches: [main]
-pull_request:
-branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-build-and-test:
-runs-on: ubuntu-latest
-services:
-mongo:
-image: mongo:5.0
-ports: 27017:27017
-  options: --health-cmd "mongo --eval 'db.stats()'" --health-interval 10s --health-timeout 5s --health-retries 5
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:5.0
+          ports:
+            - 27017:27017
+          options: >-
+            --health-cmd "mongo --eval 'db.stats()'"
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
 
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v3
-    with:
-      node-version: '18'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+      with:
+        node-version: '18'
 
-  - name: Install backend dependencies
-    working-directory: ./website_backend
-    run: npm install
+      - name: Install backend dependencies
+        working-directory: ./website_backend
+        run: npm install
 
-  - name: Build backend using Babel
-    working-directory: ./website_backend
-    run: npm run build
+      - name: Build backend using Babel
+        working-directory: ./website_backend
+        run: npm run build
 
-  - name: Run unit tests
-    working-directory: ./website_backend
-    run: npm run test:unit
+      - name: Run system tests
+        working-directory: ./website_backend
+        run: npm run test
 
-  - name: Run system tests
-    working-directory: ./website_backend
-    run: npm run test:system
+      - name: Install frontend dependencies
+        working-directory: ./website_frontend
+        run: npm install
 
-  - name: Install frontend dependencies
-    working-directory: ./website_frontend
-    run: npm install
+      - name: Build frontend
+        working-directory: ./website_frontend
+        run: npm run build
 
-  - name: Build frontend
-    working-directory: ./frontend
-    run: npm run build
-
-  - name: Simulate Deployment (Create Artifact)
-    run: |
-      mkdir -p deployment-staging
-      cp -r frontend/build/* deployment-staging/
-      echo "Built and ready to deploy!"
+      - name: Simulate Deployment (Create Artifact)
+        run: |
+          mkdir -p deployment-staging
+          cp -r frontend/build/* deployment-staging/
+          echo "Built and ready to deploy!"
