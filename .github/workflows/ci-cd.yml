@@ -52,5 +52,5 @@ jobs:
       - name: Simulate Deployment (Create Artifact)
         run: |
           mkdir -p deployment-staging
-          cp -r frontend/build/* deployment-staging/
+          cp -r website_frontend/build/* deployment-staging/
           echo "Built and ready to deploy!"
