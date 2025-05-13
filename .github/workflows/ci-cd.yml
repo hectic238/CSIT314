@@ -15,7 +15,7 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongo --eval 'db.stats()'"
+          --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -24,30 +24,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node.js (Backend and Frontend)
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Install backend dependencies
-        working-directory: ./website_backend
-        run: npm install
-
-      - name: Build backend using Babel
-        working-directory: ./website_backend
-        run: npm run build
-
-      - name: Run system tests
-        working-directory: ./website_backend
-        run: npm run test
-
+        run: |
+          cd website_backend
+          npm ci
+          
       - name: Install frontend dependencies
-        working-directory: ./website_frontend
-        run: npm install
+        run: |
+          cd website_frontend
+          npm ci
 
-      - name: Build frontend
-        working-directory: ./website_frontend
-        run: npm run build
+      - name: Run backend system test
+        run: |
+          cd website_backend
+          npm run test:system
+
+      - name: Build frontend react
+        run: |
+          cd: website_frontend
+          npm run build
 
       - name: Simulate Deployment (Create Artifact)
         run: |
