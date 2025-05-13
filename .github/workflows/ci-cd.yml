@@ -52,4 +52,4 @@ steps:
     run: |
       mkdir -p deployment-staging
       cp -r frontend/build/* deployment-staging/
-      echo "✅ Code built and ready to deploy."
+      echo "Built and ready to deploy!"
