@@ -9,8 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
-
     services:
       mongo:
         image: mongo:5.0
