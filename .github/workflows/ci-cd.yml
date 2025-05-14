@@ -47,7 +47,7 @@ jobs:
       - name: Build frontend react
         run: |
           cd: website_frontend
-          npm run build
+          npm run start
 
       - name: Simulate Deployment (Create Artifact)
         run: |
