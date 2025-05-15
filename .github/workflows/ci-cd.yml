@@ -42,6 +42,14 @@ jobs:
           cd website_frontend
           npm ci
 
+      - name: Run backend system
+        run: |
+          cd website_backend
+          npm start &
+          sleep 5
+        env:
+          MONGO_URI: mongodb://mongo:27017/eventmanager
+
       - name: Run backend system test
         run: |
           cd website_backend
