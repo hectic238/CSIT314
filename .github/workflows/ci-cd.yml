@@ -42,13 +42,11 @@ jobs:
           cd website_frontend
           npm ci
 
-      - name: Wait for MongoDB
-        run: |
-          for i in {1..10}; do
-            nc -z mongo 27017 && echo "Mongo is up!" && break
-            echo "Waiting for MongoDB..."
-            sleep 2
-          done
+      - name: Install wait-on
+        run: npm install -g wait-on
+
+      - name: Wait for MongoDB to be ready
+        run: wait-on tcp:mongo:27017
 
       - name: Run backend system test
         run: |
@@ -59,8 +57,8 @@ jobs:
 
       - name: Build frontend react
         run: |
-          cd: website_frontend
-          npm run start
+          cd website_frontend
+          npm run build
 
       - name: Simulate Deployment (Create Artifact)
         run: |
