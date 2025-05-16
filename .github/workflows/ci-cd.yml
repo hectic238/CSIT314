@@ -63,6 +63,7 @@ jobs:
           npm run test:system
         env:
           MONGO_URI: mongodb://localhost:27017/eventmanager
+          JWT_SECRET: eventmanagementwebsitekey2025
       
       - name: Build frontend react
         run: |
