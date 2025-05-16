@@ -157,3 +157,20 @@ exports.severingemail = async (req, res) => {
 	}
 };
 
+exports.eventdeletedannouncement = async (ticket) => {
+	// get event details
+	const event = await Event.findById(ticket.eventid);
+
+	const message = `
+		Hello ${ticket.userid.name},
+
+		An organiser have deleted the "${event.name}" event,
+		that you had registered for.
+		You have been refunded accordingly.
+
+		Kind regards,
+		Event Manager Team
+	`;
+
+	await sendEmail(ticket.userid.email, 'Event Manager Event Deleted', message);
+};

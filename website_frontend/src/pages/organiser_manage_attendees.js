@@ -195,9 +195,9 @@ function OrganiserManageAttendees() {
 				},
 			});
 				
-			// check if fetched event
+			// check if fetched user details
 			if (!response.ok) {
-				setmessage("Could not fetch the event!");
+				setmessage("Could not fetch the user details!");
 				setmessagetype("error");
 			}
 

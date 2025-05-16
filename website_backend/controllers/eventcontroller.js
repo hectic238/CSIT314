@@ -1,6 +1,14 @@
 // create an instant of event from Event.js
 const Event = require('../models/Event');
 
+// create an instance of ticket from Ticket.js model
+const Ticket = require('../models/Ticket');
+
+// send email to users, get the function
+const {eventdeletedannouncement} = require('./emailcontroller');
+
+const mongoose = require('mongoose');
+
 // create new event
 exports.createevent = async (req, res) => {
 	// required data for event creation
@@ -99,8 +107,22 @@ exports.deleteevent = async (req, res) => {
 	const {eventid} = req.params;
 
 	try {
+		const objectId = new mongoose.Types.ObjectId(eventid);
+
+		// find all tickets that needs to be deleted
+		const tickets = await Ticket.find({eventid: objectId}).populate('userid', 'name email');
+
+		if (tickets.length !== 0) {
+			for (const ticket of tickets) {
+				await eventdeletedannouncement(ticket);
+			}
+		}
+
+		// delete all tickets related to this event
+		await Ticket.deleteMany({eventid: objectId});
+
 		// delete it
-		await Event.findByIdAndDelete(eventid);
+		await Event.findByIdAndDelete(objectId);
 
 		// send result
 		res.json({message: 'Event deleted!'});
