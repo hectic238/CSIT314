@@ -56,9 +56,6 @@ jobs:
         run: |
           cd website_backend
           npm run start &
-      
-      - name: Wait for backend to be ready
-        run: npx wait-on http://localhost:5000/api/health
 
       - name: Run backend system test
         run: |
