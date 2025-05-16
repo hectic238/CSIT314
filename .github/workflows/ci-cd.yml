@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [Hasaan---Sandbox]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -23,6 +23,11 @@ jobs:
         env:
           MONGO_URI: mongodb://localhost:27017/eventmanager
           JWT_SECRET: eventmanagementwebsitekey2025
+          CLIENT_ID: 120371016917-iumg08jgnasrkj5m9d54vjdbchsne82g.apps.googleusercontent.com
+          CLIENT_SECRET: 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
+          REDIRECT_URI: http://localhost:3000/oauth2callback
+          ACCESS_TOKEN: a29.a0AW4XtxisuESdzLxoBQ0iC4b1rsFuWGLrsbKJWq8AwYnVSEV-m_SGTi4Swf9GiNfKh2Gb_NSdJUjS5pIo3hPU8euYq1lc35zcIZ22R0TH8Ih1y5z8kax_KMBKaEo3hvbRXAsCgO_rMuSprGshdtzDWkTfRtCOYTfZkiE-IRiXaCgYKAQUSARMSFQHGX2Mi-Dnu9FYhUYPZO-4E1WQnlw0175
+          REFRESH_TOKEN: 1//04Tu0sofulZaVCgYIARAAGAQSNwF-L9IrkW9o1aCqBSCYZ8tviuza_G7JvDsN19YVhjk4dTbHN6NTU1Q_Fc8IHob-lZ-QKc7BjdA
 
     steps:
       - name: Checkout code
