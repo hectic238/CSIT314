@@ -58,11 +58,17 @@ jobs:
           cd website_backend
           npm run start &
           sleep 5
+        env:
+          MONGO_URI: mongodb://localhost:27017/eventmanager
+          JWT_SECRET: eventmanagementwebsitekey2025
 
       - name: Run backend system test
         run: |
           cd website_backend
           npm run test:system
+        env:
+          MONGO_URI: mongodb://localhost:27017/eventmanager
+          JWT_SECRET: eventmanagementwebsitekey2025
       
       - name: Build frontend react
         run: |
