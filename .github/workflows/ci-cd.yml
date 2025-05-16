@@ -20,8 +20,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5        
           
-    env:
-      MONGO_URI: mongodb://localhost:27017/eventmanager
+        env:
+          MONGO_URI: mongodb://localhost:27017/eventmanager
+          JWT_SECRET: eventmanagementwebsitekey2025
 
     steps:
       - name: Checkout code
@@ -62,9 +63,6 @@ jobs:
         run: |
           cd website_backend
           npm run test:system
-        env:
-          MONGO_URI: mongodb://localhost:27017/eventmanager
-          JWT_SECRET: eventmanagementwebsitekey2025
       
       - name: Build frontend react
         run: |
