@@ -26,7 +26,7 @@ async function SystemTest() {
 		const data = loginorganiser.data;
 		const token = data.token;
 		const organiserid = data.member.memberid;
-		const role = data.role;
+		const role = data.member.role;
 
 		console.log("token");
 		console.log(token);
