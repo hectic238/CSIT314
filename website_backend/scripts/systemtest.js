@@ -12,6 +12,8 @@ async function SystemTest() {
 		});
 
 		console.log('Registered as an Organiser!');
+		// wait a bit, to make sure database is ready
+		await new Promise(res => setTimeout(res, 1000));
 
 		// login as an organiser
 		const loginorganiser = await axios.post('http://localhost:5000/api/login', {
@@ -20,7 +22,22 @@ async function SystemTest() {
 			role: 'Organiser'
 		});
 
+		// save organiser logged in details
+		const data = loginorganiser.data;
+		const token = data.token;
+		const organiserid = data.member.memberid;
+		const role = data.role;
+
+		console.log("token");
+		console.log(token);
+		console.log("id");
+		console.log(organiserid);
+		console.log("role");
+		console.log(role);
+
 		console.log('Logged in as an Organiser!');
+		// wait a bit, to make sure database is ready
+		await new Promise(res => setTimeout(res, 1000));
 
 		// Register a user
 		const registeruser = await axios.post('http://localhost:5000/api/member/register', {

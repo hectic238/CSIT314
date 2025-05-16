@@ -116,7 +116,7 @@ exports.login = async (req, res) => {
 	}
 	catch (error) {
 		// display what went wrong
-		res.status(500).json({error: "could not login user, server error"});	
+		res.status(500).json({error: "could not login member, server error"});	
 	}
 };
 
