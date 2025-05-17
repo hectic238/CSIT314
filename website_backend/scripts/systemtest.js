@@ -3,6 +3,10 @@ const axios = require('axios');
 
 async function SystemTest() {
 	try {
+		console.log("Email related testing got disabled");
+		console.log("Github environment does not support sending emails");
+		console.log("for full testing do a local environment one");
+
 		// Register as an organiser
 		const registerorganiser = await axios.post(`http://localhost:5000/api/member/register`, {
 			name: 'Organisertest',
@@ -149,6 +153,7 @@ async function SystemTest() {
 		// wait a bit, to make sure database is ready
 		await new Promise(res => setTimeout(res, 1000));
 
+	/** Commenting this out, so it does not run in github 
 		// send an announcement email to users under an event
 		const announcementtoalleventusers = await axios.post(`http://localhost:5000/api/email/sendannouncement`, {
 			"eventid": eventid,
@@ -163,6 +168,7 @@ async function SystemTest() {
 		console.log('sent an announcement to all users under an event');
 		// wait a bit, to make sure database is ready
 		await new Promise(res => setTimeout(res, 1000));
+	**/
 
 		// list all available events
 		const getallevents = await axios.get(`http://localhost:5000/api/events/user`, {
@@ -194,6 +200,7 @@ async function SystemTest() {
 		// wait a bit, to make sure database is ready
 		await new Promise(res => setTimeout(res, 1000));
 
+	/** Commenting this out, so it does not run in github
 		// send email to users under an event, delete their ticket, delete the event
 		const deleteevent = await axios.delete(`http://localhost:5000/api/events/organiser/${eventid}`, {
 			headers: {
@@ -204,6 +211,7 @@ async function SystemTest() {
 		console.log('sent email to users under an event, deleted their tickets, deleted the event');
 		// wait a bit, to make sure database is ready
 		await new Promise(res => setTimeout(res, 1000));
+	**/
 	}
 	catch (err) {
 		console.error('Test failed!', err.response?.data || err.message);
