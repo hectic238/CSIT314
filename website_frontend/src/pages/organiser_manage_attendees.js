@@ -142,7 +142,7 @@ function OrganiserManageAttendees() {
 			setmessagetype('');
 
 			// if user does not exist, and was just made
-			if (response_previous == 201) {
+			if (response_previous === 201) {
 				// send password to user via email
 				await sendpasswordbyemail(userid, password);
 			}
