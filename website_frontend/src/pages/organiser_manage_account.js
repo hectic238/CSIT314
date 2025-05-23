@@ -107,7 +107,7 @@ function OrganiserManageAccount() {
 		// validate email entry
 		// input type = "email" just does a visual message, does not validate :(
 		// string + @ + string + . + string
-		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
 		// email validity check
 		if (!emailRegex.test(formData.email)) {
@@ -149,6 +149,8 @@ function OrganiserManageAccount() {
 				setmessage("Please, log in again!");
 				setmessagetype("error");
 				navigate("/organiser-login");
+
+				return;
 			}
 
 			setmessage("Organiser details updated!");

@@ -170,6 +170,12 @@ exports.editorganiserdetails = async (req, res) => {
 			return res.status(404).json({error: "organiser not found"});
 		}
 
+		// see if the email is already in use
+		const emailexists = await Organiser.findOne({email});
+		if (emailexists && (organiserid != organiser._id)) {
+			return res.status(409).json({error: "Email already in use"});
+		}
+
 		// hash the password using bcrypt
 		const salt = await bcrypt.genSalt(10);
 		const hashedpassword = await bcrypt.hash(password, salt);
@@ -205,6 +211,12 @@ exports.edituserdetails = async (req, res) => {
 		// check that we got the organiser
 		if (!user) {
 			return res.status(404).json({error: "user not found"});
+		}
+		
+		// see if the email is already in use
+		const emailexists = await User.findOne({email});
+		if (emailexists && (userid != user._id)) {
+			return res.status(409).json({error: "Email already in use"});
 		}
 
 		// hash the password using bcrypt
