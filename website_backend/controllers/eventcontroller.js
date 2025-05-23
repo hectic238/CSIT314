@@ -18,7 +18,7 @@ exports.createevent = async (req, res) => {
 		const existingevent = await Event.findOne({name, date, time, location, type, description, generalprice, vipprice, organiser});
 
 		// check if this event was already made (do not allow duplicates)
-		if (exisitingevent) {
+		if (existingevent) {
 			return res.status(409).json({error: "This exact event already exists!"});
 		}
 
