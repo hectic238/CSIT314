@@ -153,7 +153,8 @@ async function SystemTest() {
 		// wait a bit, to make sure database is ready
 		await new Promise(res => setTimeout(res, 1000));
 
-	/** Commenting this out, so it does not run in github 
+	/** Commenting this out, so it does not run in github
+ 	**/ 
 		// send an announcement email to users under an event
 		const announcementtoalleventusers = await axios.post(`http://localhost:5000/api/email/sendannouncement`, {
 			"eventid": eventid,
@@ -168,7 +169,8 @@ async function SystemTest() {
 		console.log('sent an announcement to all users under an event');
 		// wait a bit, to make sure database is ready
 		await new Promise(res => setTimeout(res, 1000));
-	**/
+	/** Commenting this out, so it does not run in github
+ 	**/
 
 		// list all available events
 		const getallevents = await axios.get(`http://localhost:5000/api/events/user`, {
