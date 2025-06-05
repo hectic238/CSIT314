@@ -112,9 +112,6 @@ function OrganiserManageAttendees() {
 			setmessage("Ticket created!");
 			setmessagetype("success");
 
-			// send password to user via email
-			await sendpasswordbyemail(userid, password);
-
 			// reload page
 			window.location.reload();
 		}
@@ -124,7 +121,7 @@ function OrganiserManageAttendees() {
 		}
 	};
 
-	const GenerateTicket = async(tickettype, userid, password) => {
+	const GenerateTicket = async(tickettype, userid, password, response_previous) => {
 		// get token from local storage
 		const token = localStorage.getItem('token');
 	
@@ -143,6 +140,12 @@ function OrganiserManageAttendees() {
 			// reset message display
 			setmessage('');
 			setmessagetype('');
+
+			// if user does not exist, and was just made
+			if (response_previous === 201) {
+				// send password to user via email
+				await sendpasswordbyemail(userid, password);
+			}
 
 			// get ticket from database (assuming there is one)
 			const ticketresponse = await fetch(`http://localhost:5000/api/tickets/user/${eventid}/${userid}`, {
@@ -265,7 +268,7 @@ function OrganiserManageAttendees() {
 		// validate email entry
 		// input type = "email" just does a visual message, does not validate :(
 		// string + @ + string + . + string
-		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
 		// email validity check
 		if (!emailRegex.test(formData.email)) {
@@ -329,7 +332,7 @@ function OrganiserManageAttendees() {
 
 			// assuming it returns ok
 			// then it is either registered now or previously so create a ticket
-			await GenerateTicket(formData.tickettype, currentuserid, password);
+			await GenerateTicket(formData.tickettype, currentuserid, password, response.status);
 		}
 		catch (error) {
 			setmessage("Could not register, try again!");

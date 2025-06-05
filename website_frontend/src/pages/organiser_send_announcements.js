@@ -90,6 +90,13 @@ function OrganiserSendAnnouncements() {
 	// what happens when submitted
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		// check if the organiser is sending an empty email
+		if (!formData.announcement) {
+			setmessage("Please enter a message to be announced!");
+			setmessagetype("error");
+			return;
+		}
 		
 		// send data to backend
 		try {

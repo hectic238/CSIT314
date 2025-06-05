@@ -106,6 +106,13 @@ function OrganiserEditEvent() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		// validation to prevent empty slots
+		if (!formData.name || !formData.date || !formData.time || !formData.location || !formData.type || !formData.description || !formData.generalprice || !formData.vipprice) {
+			setmessage("Please, fill all the fields!");
+			setmessagetype("error");
+			return;
+		}
+
 		// validate time, date and make sure they are not in the past
 		const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
 		const now = new Date();

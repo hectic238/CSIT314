@@ -23,7 +23,7 @@ const Event = require('../models/Event');
 // create an instant of ticket from Ticket.js
 const Ticket = require('../models/Ticket');
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = "mongodb://localhost:27017/eventmanager";
 
 async function seed() {
 	try {
