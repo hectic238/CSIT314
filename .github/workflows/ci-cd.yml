@@ -23,6 +23,12 @@ jobs:
         env:
           MONGO_URI: mongodb://localhost:27017/eventmanager
           JWT_SECRET: eventmanagementwebsitekey2025
+          CLIENT_ID: 120371016917-iumg08jgnasrkj5m9d54vjdbchsne82g.apps.googleusercontent.com
+          CLIENT_SECRET: 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
+          REDIRECT_URI: http://localhost:3000/oauth2callback
+          ACCESS_TOKEN: ya29.a0AW4Xtxh4O6ul18KuK0bf8rDPIkUjv_P-VJGP8OFJ45DzhLFD3JhEU7vES7igCNj_W8YAQNcHpVePn6oNG4uyiOx_2EENekBtLVWwuL76zt-lbGdyVp0TtgNjH2NIBCb_gmzrkopavd5tMiwN8GlTI8aDRzMTxEtskskx_0nraCgYKAeUSARMSFQHGX2MiKk98iSLTd5sI7OVkQfesBg0175
+          REFRESH_TOKEN: 1//04YrqwPThIsdqCgYIARAAGAQSNwF-L9Irj4uCnphTLmabZvLQ1OiQeS-WzxIVegAHHX3YQM4KhnEOamGsqzyhVSt47ZLbGu5-ZBw
+          EMAIL_USERNAME: eventmanagermanagement@gmail.com
           
     steps:
       - name: Checkout code
