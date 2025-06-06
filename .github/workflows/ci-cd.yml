@@ -21,8 +21,13 @@ jobs:
           --health-retries 5        
           
         env:
-          MONGO_URI: mongodb://localhost:27017/eventmanager
-          JWT_SECRET: eventmanagementwebsitekey2025
+          MONGO_URI: ${{secrets.MONGO_URI}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          CLIENT_ID: ${{secrets.CLIENT_ID}}
+          CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
+          REDIRECT_URI: ${{secrets.REDIRECT_URI}}
+          EMAIL_USERNAME: ${{secrets.EMAIL_USERNAME}}
+
           
     steps:
       - name: Checkout code
